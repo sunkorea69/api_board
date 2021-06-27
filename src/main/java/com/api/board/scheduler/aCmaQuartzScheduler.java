@@ -15,7 +15,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Component;
 
-import com.api.board.job.acmaQuartzJob;
+import com.api.board.job.*;
 
 /*
  * 		@Component
@@ -66,7 +66,7 @@ public class aCmaQuartzScheduler {
          * 			>>> 같은 Job 로직이더라도 서로 다른 스케쥴로 동작하게 할 경우가 있기 때문에 각각의 Job 은 고유한 identity 를 가져야 한다.
          */
         JobDetail job = JobBuilder.newJob(acmaQuartzJob.class).withIdentity("aCmaJob").build();
-        JobDetail job1 = JobBuilder.newJob(acmaQuartzJob.class).withIdentity("aCmaJob1").build();
+        JobDetail job1 = JobBuilder.newJob(acmaQuartzJob1.class).withIdentity("aCmaJob1").build();
 
 
         /*
@@ -120,8 +120,8 @@ public class aCmaQuartzScheduler {
          */
 //		Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 54 8 ? * THU")).build();
 //		Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 55 8 ? * THU")).build();
-        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();
-        Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/15 * * * * ?")).build();
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
+        Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
 
         /*
          * 		StartAt 과 endAt 을 사용하여 Job 스케쥴의 시작, 종료 시간 지정
