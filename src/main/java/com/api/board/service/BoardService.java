@@ -5,7 +5,14 @@ import java.util.List;
 import com.api.board.domain.Board;
 
 public interface BoardService {
-	
+
+	/**
+	 * 게시글 목록 조회
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public int getBoardCount() throws Exception;
 	/**
 	 * 게시글 목록 조회
 	 * 

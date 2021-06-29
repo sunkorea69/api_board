@@ -7,6 +7,13 @@ import com.api.board.domain.Board;
 public interface BoardMapper {
 
 	/**
+	 * 게시글 전체count
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public int getBoardCount() throws Exception;
+	/**
 	 * 게시글 목록 조회
 	 * 
 	 * @return

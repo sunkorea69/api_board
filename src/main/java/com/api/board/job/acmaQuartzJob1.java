@@ -34,7 +34,7 @@ public class acmaQuartzJob1 implements Job {
 //            + "/rawblock/0000000000000bae09a7a393a8acd"
 //            + "ed75aa67e46cb81f7acaa5ad94f9eacd103";
 //    private static final String GET_URL = "https://m.gsshop.com/index.gs";
-    private static final String GET_URL = "http://localhost:8080/board";
+    private static final String GET_URL = "http://localhost:8080/board/boardCount";
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -91,7 +91,7 @@ public class acmaQuartzJob1 implements Job {
         chatId = "1656665448";
 //        chatId = "887280669";
 //        System.out.println(fcmMessage.substring(1,20));
-        fcmMessage = fcmMessage.substring(1,200);
+//        fcmMessage = fcmMessage.substring(1,200);
         try{
 
             CloseableHttpClient httpClient = HttpClients.createDefault();

@@ -30,6 +30,17 @@ public class BoardController {
 	 * @return
 	 * @throws Exception
 	 */
+	@ApiOperation(value = "게시글 전체 Count", notes = "게시글 전체 Count 조회합니다.")
+	@RequestMapping(value = "/boardCount", method = RequestMethod.GET)
+	@ResponseBody
+	public int getBoardCount() throws Exception {
+
+		Boards boards = new Boards();
+		int count = boardService.getBoardCount();
+
+		return count;
+	}
+
 	@ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록을 조회합니다.")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody

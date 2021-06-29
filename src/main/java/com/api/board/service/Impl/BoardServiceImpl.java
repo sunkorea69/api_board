@@ -19,6 +19,15 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 
 	/**
+	 * 게시글 count
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public int getBoardCount() throws Exception {
+		return boardMapper.getBoardCount();
+	}
+	/**
 	 * 게시글 목록 조회
 	 * 
 	 * @return
