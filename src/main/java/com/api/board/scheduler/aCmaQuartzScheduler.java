@@ -26,8 +26,10 @@ public class aCmaQuartzScheduler {
 
     private SchedulerFactory schedulerFactory;
     private SchedulerFactory schedulerFactory1;
+    private SchedulerFactory schedulerFactory2;
     private Scheduler scheduler;
     private Scheduler scheduler1;
+    private Scheduler scheduler2;
 
     /*
      * 		@PostConstruct
@@ -44,6 +46,7 @@ public class aCmaQuartzScheduler {
          */
         schedulerFactory = new StdSchedulerFactory();
         schedulerFactory1 = new StdSchedulerFactory();
+        schedulerFactory2 = new StdSchedulerFactory();
 
 
         /*
@@ -51,6 +54,7 @@ public class aCmaQuartzScheduler {
          */
         scheduler = schedulerFactory.getScheduler();
         scheduler1 = schedulerFactory1.getScheduler();
+        scheduler2 = schedulerFactory2.getScheduler();
 
 
         /*
@@ -58,6 +62,7 @@ public class aCmaQuartzScheduler {
          */
         scheduler.start();
         scheduler1.start();
+        scheduler2.start();
 
 
         /*
@@ -67,6 +72,7 @@ public class aCmaQuartzScheduler {
          */
         JobDetail job = JobBuilder.newJob(acmaQuartzJob.class).withIdentity("aCmaJob").build();
         JobDetail job1 = JobBuilder.newJob(acmaQuartzJob1.class).withIdentity("aCmaJob1").build();
+        JobDetail job2 = JobBuilder.newJob(acmaQuartzJob_update.class).withIdentity("aCmaJob2").build();
 
 
         /*
@@ -122,6 +128,7 @@ public class aCmaQuartzScheduler {
 //		Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 55 8 ? * THU")).build();
         Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
         Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
+        Trigger trigger2 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
 
         /*
          * 		StartAt 과 endAt 을 사용하여 Job 스케쥴의 시작, 종료 시간 지정
@@ -134,6 +141,7 @@ public class aCmaQuartzScheduler {
          * 		quartz.Scheduler 에 Job 과 Trigger 연결
          */
         scheduler.scheduleJob(job, trigger);
-        scheduler1.scheduleJob(job1, trigger1);
+//        scheduler1.scheduleJob(job1, trigger1);
+//        scheduler2.scheduleJob(job2, trigger2);
     }
 }

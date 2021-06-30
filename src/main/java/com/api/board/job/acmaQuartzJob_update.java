@@ -1,8 +1,5 @@
 package com.api.board.job;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,9 +8,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -21,6 +16,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -28,13 +24,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.http.client.*;
-
 /*
  * Job Interface를 implemnets 하여 구현한다.
  */
 @Slf4j
-public class acmaQuartzJob implements Job {
+public class acmaQuartzJob_update implements Job {
     private static final String USER_AGENT = "Mozila/5.0";
     //    private static final String GET_URL = "https://blockchain.info/ko"
 //            + "/rawblock/0000000000000bae09a7a393a8acd"
@@ -45,18 +39,7 @@ public class acmaQuartzJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        Date date = new Date();
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy년 MM월 dd일");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("HH시 mm분 ss초");
-        String currentDate = sdf1.format(date);
-        String currentTime = sdf2.format(date);
-        System.out.println("------------------Start----------------");
-
-        /*
-         * 		execute() method 에 로직 추가
-         */
         log.info("========= acmaQuartzJob execute() method Start !!! =========");
-        log.info("Start Time >>> {}", currentDate + " " + currentTime);
         sendOtherApi();
     }
 

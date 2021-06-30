@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 
 import com.zaxxer.hikari.HikariDataSource;
  
-@ComponentScan(basePackages = "com.api.book.service")
+@ComponentScan(basePackages = "com.api.board.service")
 @MapperScan(basePackages = "com.api.board.mapper", sqlSessionFactoryRef = "sqlSessionFactory")
 @Configuration
 public class DataSourceConfig implements TransactionManagementConfigurer {

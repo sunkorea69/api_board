@@ -1,15 +1,15 @@
 package com.api.board.service.Impl;
 
-import java.util.List;
-
+import com.api.board.domain.Board;
+import com.api.board.domain.Lgec_Mkt_User_Count;
+import com.api.board.mapper.BoardMapper;
+import com.api.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.board.domain.Board;
-import com.api.board.mapper.BoardMapper;
-import com.api.board.service.BoardService;
+import java.util.List;
 
 @Transactional(readOnly = true)
 @Service
@@ -24,7 +24,7 @@ public class BoardServiceImpl implements BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getBoardCount() throws Exception {
+	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception {
 		return boardMapper.getBoardCount();
 	}
 	/**

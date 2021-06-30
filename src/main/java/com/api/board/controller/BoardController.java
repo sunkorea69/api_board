@@ -1,5 +1,6 @@
 package com.api.board.controller;
 
+import com.api.board.domain.Lgec_Mkt_User_Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import com.api.board.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
+
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
@@ -33,12 +36,11 @@ public class BoardController {
 	@ApiOperation(value = "게시글 전체 Count", notes = "게시글 전체 Count 조회합니다.")
 	@RequestMapping(value = "/boardCount", method = RequestMethod.GET)
 	@ResponseBody
-	public int getBoardCount() throws Exception {
+	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception {
 
-		Boards boards = new Boards();
-		int count = boardService.getBoardCount();
+		List<Lgec_Mkt_User_Count> hm = boardService.getBoardCount();
 
-		return count;
+		return hm;
 	}
 
 	@ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록을 조회합니다.")

@@ -3,6 +3,7 @@ package com.api.board.service;
 import java.util.List;
 
 import com.api.board.domain.Board;
+import com.api.board.domain.Lgec_Mkt_User_Count;
 
 public interface BoardService {
 
@@ -12,7 +13,7 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getBoardCount() throws Exception;
+	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception;
 	/**
 	 * 게시글 목록 조회
 	 * 
