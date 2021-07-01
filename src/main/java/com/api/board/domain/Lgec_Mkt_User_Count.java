@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.XmlType;
 @Setter
 public class Lgec_Mkt_User_Count {
 
-    @ApiModelProperty(value = "Count")
-    int COUNT;
     @ApiModelProperty(value = "타이틀")
     String TITLE;
+    @ApiModelProperty(value = "Count")
+    int COUNT;
 }

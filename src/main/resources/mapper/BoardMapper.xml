@@ -6,7 +6,14 @@
 
     <!-- 게시글 전체count -->
     <select id="getBoardCount" resultType="com.api.board.domain.Lgec_Mkt_User_Count">
-SELECT '전체고객' TITLE, 111111111 COUNT
+
+SELECT 'compare' TITLE, sum(case when promo_num = 517732 then 1 else 0 end) - sum(case when promo_num = 517733 then 1 else 0 end) as COUNT
+FROM lgec_mkt_user
+WHERE promo_num in ( 517732,  517733)
+AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN '202106251400' AND '202106252359'
+AND dbsts = 'A'
+union all
+SELECT '전체고객' TITLE, 9999999 COUNT
 UNION ALL
 SELECT 0 ECUSRID, COUNT(*) COUNT
 FROM (
@@ -17,7 +24,7 @@ AND dbsts = 'A'
 ORDER BY USER_NUM DESC
 ) a
 union all
-SELECT '2번이상', 111111111
+SELECT '2번이상', 9999999
 union all
 SELECT ECUSERID, CNT FROM (
 SELECT ECUSERID, COUNT(*) AS CNT FROM LGEC_MKT_USER
@@ -28,7 +35,7 @@ GROUP BY ECUSERID
 ) TEMP
 WHERE TEMP.CNT >= 2
 union all
-SELECT '중복제거후' title, 111111111
+SELECT '중복제거후' title, 9999999
 union all
 SELECT ecuserid, COUNT(*) FROM lgec_mkt_user
 WHERE promo_num = 517732
@@ -37,14 +44,14 @@ AND dbsts = 'A'
 GROUP BY ecuserid
 HAVING COUNT(*) > 1
 union all
-SELECT '지급개수확인', 111111111
+SELECT '지급개수확인', 9999999
 union all
 SELECT 0, count(*) FROM lgec_mkt_user
 WHERE promo_num = 517733
 AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN '202106251400' AND '202106252359'
 AND dbsts = 'A'
 union all
-SELECT '중복지급확인',111111111
+SELECT '중복지급확인',9999999
 union all
 SELECT 0, COUNT(*) FROM lgec_mkt_user
 WHERE promo_num = 517733
