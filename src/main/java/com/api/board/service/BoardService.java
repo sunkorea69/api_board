@@ -13,7 +13,7 @@ public interface BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception;
+	public List<Lgec_Mkt_User_Count> getBoardCount(int inflow,int provide) throws Exception;
 	/**
 	 * 게시글 목록 조회
 	 * 

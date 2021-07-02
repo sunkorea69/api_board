@@ -7,15 +7,7 @@
     <!-- 게시글 전체count -->
     <select id="getBoardCount" resultType="com.api.board.domain.Lgec_Mkt_User_Count">
 
-SELECT 'compare' TITLE, sum(case when promo_num = 517732 then 1 else 0 end) - sum(case when promo_num = 517733 then 1 else 0 end) as COUNT
-FROM lgec_mkt_user
-WHERE promo_num in ( 517732,  517733)
-AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN '202106251400' AND '202106252359'
-AND dbsts = 'A'
-union all
-SELECT '전체고객' TITLE, 9999999 COUNT
-UNION ALL
-SELECT 0 ECUSRID, COUNT(*) COUNT
+SELECT 'target' TITLE, COUNT(*) COUNT
 FROM (
 SELECT * FROM lgec_mkt_user
 WHERE promo_num = 517732
@@ -24,6 +16,12 @@ AND dbsts = 'A'
 ORDER BY USER_NUM DESC
 ) a
 union all
+SELECT 'difference' TITLE, IFNULL(sum(case when promo_num = 517732 then 1 else 0 end) - sum(case when promo_num = 517733 then 1 else 0 end),0) as COUNT
+FROM lgec_mkt_user
+WHERE promo_num in ( 517732,  517733)
+AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN '202106251400' AND '202106252359'
+AND dbsts = 'A'
+UNION ALL
 SELECT '2번이상', 9999999
 union all
 SELECT ECUSERID, CNT FROM (

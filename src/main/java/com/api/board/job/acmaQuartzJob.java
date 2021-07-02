@@ -3,6 +3,10 @@ package com.api.board.job;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import javafx.beans.property.IntegerProperty;
+import jdk.nashorn.internal.parser.JSONParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,11 +28,10 @@ import org.quartz.JobExecutionException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.http.client.*;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 /*
  * Job Interface를 implemnets 하여 구현한다.
@@ -77,28 +80,57 @@ public class acmaQuartzJob implements Job {
             //get 요청
             CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
 
-            System.out.println("GET Response Status");
-            System.out.println(httpResponse.getStatusLine().getStatusCode());
+//            System.out.println("GET Response Status");
+//            System.out.println(httpResponse.getStatusLine().getStatusCode());
             String json = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-
+//            System.out.println(httpResponse.getClass());
             System.out.println(json);
 
+            boolean differ_status = false;
+            boolean differ_target = false;
+
+            Gson g = new Gson();
+            ArrayList<Map<String, Object>> data = g.fromJson(json, ArrayList.class);
+            for (Map<String, Object> mp : data) {
+//                System.out.println(mp);
+                for (String key : mp.keySet()) {
+                    if (mp.get(key).equals("target")) {
+                        if ((Double) mp.get("count") > 0) {
+                            differ_target = true;
+                            break;
+                        }
+                    }
+                }
+
+                for (String key : mp.keySet()){
+                    if (mp.get(key).equals("difference")) {
+                        if ((Double) mp.get("count") > 0) {
+                            differ_status = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            //target 0 보다 크면 유입으로 봄
+            //difference 값이 0 이면 더이상 실행안함
             httpClient.close();
 
-            push_send("A", json);
-
+            if (differ_target && differ_status) {
+                json = json.replace("}", "\n}");
+                push_send("A", json);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void push_send(String chatId, String fcmMessage){
+    public static void push_send(String chatId, String fcmMessage) {
         chatId = "1656665448";
 //        chatId = "887280669";
 //        System.out.println(fcmMessage.substring(1,20));
 //        fcmMessage = fcmMessage.substring(1,200);
-        try{
+        try {
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
 //         httpClient.getParams().setParameter("http.protocol", "TLSv1.2");
@@ -112,7 +144,7 @@ public class acmaQuartzJob implements Job {
             params.add(new BasicNameValuePair("text", fcmMessage));
             UrlEncodedFormEntity strent = new UrlEncodedFormEntity(params, "UTF-8");
 
-            HttpPost httppost = new HttpPost("https://api.telegram.org/bot"+apiKey+"/sendmessage");
+            HttpPost httppost = new HttpPost("https://api.telegram.org/bot" + apiKey + "/sendmessage");
 //         httppost.setHeader("Content-Type", "application/json");
 //         httppost.setHeader("Authorization", "key=" + Constants.FCM_SERVER_KEY);
             httppost.setEntity(strent);
@@ -138,12 +170,12 @@ public class acmaQuartzJob implements Job {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }finally{
+            } finally {
                 if (stm != null) stm.close();
                 if (bufReader != null) bufReader.close();
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

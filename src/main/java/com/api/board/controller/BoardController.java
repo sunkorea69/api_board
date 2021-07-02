@@ -37,8 +37,10 @@ public class BoardController {
 	@RequestMapping(value = "/boardCount", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception {
+		final int inflow = 517732;
+		final int provide = 517733;
 
-		List<Lgec_Mkt_User_Count> hm = boardService.getBoardCount();
+		List<Lgec_Mkt_User_Count> hm = boardService.getBoardCount(inflow, provide);
 
 		return hm;
 	}

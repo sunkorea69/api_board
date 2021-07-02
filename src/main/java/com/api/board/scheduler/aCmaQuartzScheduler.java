@@ -115,7 +115,7 @@ public class aCmaQuartzScheduler {
          *
          * 			# Cron Expression 예제
          *
-         * 				>>> 매 1초 마다 실행		>>> "0/1 * * * * ?"
+         * 				>>> 43분에서 45초 사이에 매 1초 마다 실행		>>> "0/1 43-45 * * * ?"
          * 				>>> 매 5분 마다 실행		>>> "0 0/5 * ?"
          * 				>>> 20초뒤 5분마다 실행	>>> "20 0/5 * ?"
          * 				>>> 매일 오전 3시에 실행	>>> "0 0 3 * * ?"
@@ -126,7 +126,7 @@ public class aCmaQuartzScheduler {
          */
 //		Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 54 8 ? * THU")).build();
 //		Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 55 8 ? * THU")).build();
-        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();
         Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
         Trigger trigger2 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
 

@@ -79,69 +79,8 @@ public class acmaQuartzJob1 implements Job {
 
             httpClient.close();
 
-            push_send("A", json);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    public static void push_send(String chatId, String fcmMessage){
-        chatId = "1656665448";
-//        chatId = "887280669";
-//        System.out.println(fcmMessage.substring(1,20));
-//        fcmMessage = fcmMessage.substring(1,200);
-        try{
-
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-//         httpClient.getParams().setParameter("http.protocol", "TLSv1.2");
-
-//            final String apiKey = "1627097682:AAHdBcBtth7Zgtje7MsQB2dYGk-n4ASUszM";
-            final String apiKey = "1601503213:AAGlsQVSRF7FQu4Ve_GOsBRzjnPlKuPYWtM";
-//         String chatId = "887280669";
-
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("chat_id", chatId));
-            params.add(new BasicNameValuePair("text", fcmMessage));
-            UrlEncodedFormEntity strent = new UrlEncodedFormEntity(params, "UTF-8");
-
-            HttpPost httppost = new HttpPost("https://api.telegram.org/bot"+apiKey+"/sendmessage");
-//         httppost.setHeader("Content-Type", "application/json");
-//         httppost.setHeader("Authorization", "key=" + Constants.FCM_SERVER_KEY);
-            httppost.setEntity(strent);
-
-            HttpResponse response = httpClient.execute(httppost);
-            HttpEntity resEntity = response.getEntity();
-            InputStream stm = null;
-            BufferedReader bufReader = null;
-
-            try {
-                stm = resEntity.getContent();
-                bufReader = new BufferedReader(new InputStreamReader(stm, "euc-kr"));
-
-                String bufferRead = "";
-                StringBuffer responseData = new StringBuffer();
-                while ((bufferRead = bufReader.readLine()) != null) {
-                    responseData.append(bufferRead);
-                }
-                System.out.println("#FCM 푸시 결과 :" + responseData.toString() + "");
-
-                bufReader.close();
-                stm.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }finally{
-                if (stm != null) stm.close();
-                if (bufReader != null) bufReader.close();
-            }
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-//        출처: https://eddyplusit.tistory.com/51 [EddIT]
 }

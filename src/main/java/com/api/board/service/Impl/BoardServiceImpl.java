@@ -24,8 +24,8 @@ public class BoardServiceImpl implements BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception {
-		return boardMapper.getBoardCount();
+	public List<Lgec_Mkt_User_Count> getBoardCount(int inflow,int provide) throws Exception {
+		return boardMapper.getBoardCount( inflow, provide);
 	}
 	/**
 	 * 게시글 목록 조회
