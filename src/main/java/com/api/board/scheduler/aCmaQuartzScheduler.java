@@ -126,8 +126,8 @@ public class aCmaQuartzScheduler {
          */
 //		Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 54 8 ? * THU")).build();
 //		Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0 55 8 ? * THU")).build();
-        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();
-        Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/07 * * * * ?")).build();
+        Trigger trigger1 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/08 * * * * ?")).build();
         Trigger trigger2 = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?")).build();
 
         /*
@@ -141,7 +141,7 @@ public class aCmaQuartzScheduler {
          * 		quartz.Scheduler 에 Job 과 Trigger 연결
          */
         scheduler.scheduleJob(job, trigger);
-//        scheduler1.scheduleJob(job1, trigger1);
+        scheduler1.scheduleJob(job1, trigger1);
 //        scheduler2.scheduleJob(job2, trigger2);
     }
 }

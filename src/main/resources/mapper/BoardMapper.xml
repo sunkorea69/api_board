@@ -16,7 +16,7 @@ AND dbsts = 'A'
 ORDER BY USER_NUM DESC
 ) a
 union all
-SELECT 'difference' TITLE, IFNULL(sum(case when promo_num = #{inflow} then 1 else 0 end) - sum(case when promo_num = #{provide} then 1 else 0 end),0) as COUNT
+SELECT 'difference' TITLE, IFNULL(sum(case when promo_num = #{inflow} then 1 else 0 end),0) - IFNULL(sum(case when promo_num = #{provide} then 1 else 0 end),0) as COUNT
 FROM lgec_mkt_user
 WHERE promo_num in ( #{inflow},  #{provide})
 AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
@@ -58,6 +58,77 @@ AND dbsts = 'A'
 GROUP BY ecuserid
 HAVING COUNT(*) > 1
 
+	</select>
+
+	<!-- 3회 이상은 모두 D -->
+	<delete id="updateMkt_3" parameterType="hashmap" >
+
+UPDATE lgec_mkt_user
+SET dbsts = 'D'
+, upddate = NOW()
+, upduser = 'HANGBOT-16608'
+WHERE promo_num = #{inflow}
+AND DATE_FORMAT(CREDATE,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+AND ecuserid IN (
+SELECT ECUSERID
+FROM (
+SELECT ECUSERID, CNT FROM (
+SELECT ECUSERID, COUNT(*) AS CNT FROM LGEC_MKT_USER
+WHERE PROMO_NUM = #{inflow}
+AND DATE_FORMAT(CREDATE,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+AND dbsts = 'A'
+GROUP BY ECUSERID
+) TEMP
+WHERE TEMP.CNT >= 3
+ORDER BY CNT DESC
+) a
+)
+	</delete>
+	<!-- 2회 하나만 D -->
+	<delete id="updateMkt_2" parameterType="hashmap" >
+UPDATE lgec_mkt_user
+SET dbsts = 'D'
+, upddate = NOW()
+, upduser = 'HANGBOT-16608'
+WHERE promo_num = #{inflow}
+AND user_num IN (
+SELECT user_num FROM (
+SELECT USER_NUM, AA.ECUSERID, AA.CREDATE
+,CASE @GROUPING WHEN ECUSERID THEN @RANKT := @RANK + 1 ELSE @RANK := 1 END AS RANKING
+,@GROUPING := ECUSERID
+FROM (SELECT USER_NUM, AA.ECUSERID, AA.CREDATE
+FROM LGEC_MKT_USER AA JOIN (SELECT ECUSERID FROM LGEC_MKT_USER
+WHERE PROMO_NUM = #{inflow}
+AND dbsts = 'A'
+AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+GROUP BY ECUSERID
+HAVING COUNT(*) > 1) BB
+ON AA.ECUSERID = BB.ECUSERID
+WHERE AA.PROMO_NUM = #{inflow}
+AND DATE_FORMAT(AA.credate,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+AND AA.dbsts = 'A') AA, (SELECT @GROUPING := '', @RANK := 0) XX
+ORDER BY ECUSERID, CREDATE DESC
+) CC
+WHERE CC.RANKING >= 2
+)
+	</delete>
+	<!-- target count -->
+	<select id="getTargetCount" parameterType="hashmap" resultType="int">
+SELECT ifnull(sum(case when promo_num = #{inflow} then 1 else 0 end),0) as a
+FROM lgec_mkt_user
+WHERE promo_num in ( #{inflow})
+AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+AND dbsts = 'A'
+;
+	</select>
+
+	<select id="getProvideCount" parameterType="hashmap" resultType="int">
+SELECT ifnull(sum(case when promo_num = #{provide} then 1 else 0 end),0) as b
+FROM lgec_mkt_user
+WHERE promo_num in ( #{provide})
+AND DATE_FORMAT(credate,'%Y%m%d%H%i') BETWEEN #{start} AND #{end}
+AND dbsts = 'A'
+;
 	</select>
 	<!-- 게시글 목록 조회 -->
 	<select id="getBoardList" resultType="com.api.board.domain.Board">

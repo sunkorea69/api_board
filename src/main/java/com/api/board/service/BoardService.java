@@ -16,8 +16,26 @@ public interface BoardService {
 	 */
 	public List<Lgec_Mkt_User_Count> getBoardCount(Map map) throws Exception;
 	/**
+	 * 3회 이상이하면 모두 D 처리
+	 *
+	 * @param hashmap
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMkt_3(Map map) throws Exception;
+	/**
+	 * 2회 이면 하나만  D 처리
+	 *
+	 * @param hashmap
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateMkt_2(Map map) throws Exception;
+	public int getTargetCount(Map map) throws Exception;
+	public int getProvideCount(Map map) throws Exception;
+	/**
 	 * 게시글 목록 조회
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */

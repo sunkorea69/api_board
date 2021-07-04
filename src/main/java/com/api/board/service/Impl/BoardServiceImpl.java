@@ -28,6 +28,37 @@ public class BoardServiceImpl implements BoardService {
 	public List<Lgec_Mkt_User_Count> getBoardCount(Map map) throws Exception {
 		return boardMapper.getBoardCount(map);
 	}
+
+	/**
+	 * 3회 유입 한건 모두 D 처리
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public int updateMkt_3(Map map) throws Exception {
+		return boardMapper.updateMkt_3(map);
+	};
+	/**
+	 * 2회 유입 한건 하나만 D 처리
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+
+	public int getTargetCount(Map map) throws Exception {
+
+		return boardMapper.getTargetCount(map);
+	}
+	public int getProvideCount(Map map) throws Exception {
+		return boardMapper.getProvideCount(map);
+	}
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public int updateMkt_2(Map map) throws Exception {
+		return boardMapper.updateMkt_2(map);
+	};
+
 	/**
 	 * 게시글 목록 조회
 	 * 
