@@ -4,12 +4,7 @@ import com.api.board.domain.Lgec_Mkt_User_Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.board.domain.Board;
 import com.api.board.domain.Boards;
@@ -18,125 +13,131 @@ import com.api.board.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
 
-	@Autowired
-	private BoardService boardService;
+    @Autowired
+    private BoardService boardService;
 
-	/**
-	 * 게시글 목록 조회
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "게시글 전체 Count", notes = "게시글 전체 Count 조회합니다.")
-	@RequestMapping(value = "/boardCount", method = RequestMethod.GET)
-	@ResponseBody
-	public List<Lgec_Mkt_User_Count> getBoardCount() throws Exception {
-		final int inflow = 517732;
-		final int provide = 517733;
+    /**
+     * 게시글 목록 조회
+     *
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "게시글 전체 Count", notes = "게시글 전체 Count 조회합니다.")
+    @RequestMapping(value = "/boardCount", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Lgec_Mkt_User_Count> getBoardCount(@RequestParam("start") String start) throws Exception {
 
-		List<Lgec_Mkt_User_Count> hm = boardService.getBoardCount(inflow, provide);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("start", start.concat("00"));
+        map.put("end", start.concat("59"));
+        map.put("inflow", 517732);
+        map.put("provide", 517733);
 
-		return hm;
-	}
+        List<Lgec_Mkt_User_Count> hm = boardService.getBoardCount(map);
 
-	@ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록을 조회합니다.")
-	@RequestMapping(method = RequestMethod.GET)
-	@ResponseBody
-	public Boards getBoardList() throws Exception {
+        return hm;
+    }
 
-		Boards boards = new Boards();
-		boards.setBoards(boardService.getBoardList());
+    @ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록을 조회합니다.")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public Boards getBoardList() throws Exception {
 
-		return boards;
-	}
+        Boards boards = new Boards();
+        boards.setBoards(boardService.getBoardList());
 
-	/**
-	 * 게시글 상세 조회
-	 * 
-	 * @param board_seq
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "게시글 상세 조회", notes = "게시글를 상세 조회합니다.")
-	@RequestMapping(value = "/{board_seq}", method = RequestMethod.GET)
-	@ResponseBody
-	public Board getBoardDetail(@PathVariable("board_seq") int board_seq) throws Exception {
+        return boards;
+    }
 
-		Board board = boardService.getBoardDetail(board_seq);
+    /**
+     * 게시글 상세 조회
+     *
+     * @param board_seq
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "게시글 상세 조회", notes = "게시글를 상세 조회합니다.")
+    @RequestMapping(value = "/{board_seq}", method = RequestMethod.GET)
+    @ResponseBody
+    public Board getBoardDetail(@PathVariable("board_seq") int board_seq) throws Exception {
 
-		if (board == null) {
-			throw new ResourceNotFoundException();
-		}
+        Board board = boardService.getBoardDetail(board_seq);
 
-		return board;
-	}
+        if (board == null) {
+            throw new ResourceNotFoundException();
+        }
 
-	/**
-	 * 게시글 등록
-	 * 
-	 * @param board
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "게시글 등록", notes = "게시글을 등록합니다.")
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	@ResponseBody
-	public Board insertBoard(@RequestBody Board board) throws Exception {
+        return board;
+    }
 
-		boardService.insertBoard(board);
+    /**
+     * 게시글 등록
+     *
+     * @param board
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "게시글 등록", notes = "게시글을 등록합니다.")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @ResponseBody
+    public Board insertBoard(@RequestBody Board board) throws Exception {
 
-		int boardSeq = board.getBoard_seq();
+        boardService.insertBoard(board);
 
-		Board boardDetail = boardService.getBoardDetail(boardSeq);
+        int boardSeq = board.getBoard_seq();
 
-		return boardDetail;
-	}
+        Board boardDetail = boardService.getBoardDetail(boardSeq);
 
-	/**
-	 * 게시글 수정
-	 * 
-	 * @param board
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "게시글 수정", notes = "게시글을 수정합니다.")
-	@RequestMapping(value = "/{board_seq}", method = RequestMethod.PUT)
-	@ResponseStatus(value = HttpStatus.OK)
-	@ResponseBody
-	public Board updateBoard(@PathVariable("board_seq") int board_seq, @RequestBody Board board) throws Exception {
+        return boardDetail;
+    }
 
-		boardService.updateBoard(board);
+    /**
+     * 게시글 수정
+     *
+     * @param board
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "게시글 수정", notes = "게시글을 수정합니다.")
+    @RequestMapping(value = "/{board_seq}", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Board updateBoard(@PathVariable("board_seq") int board_seq, @RequestBody Board board) throws Exception {
 
-		Board boardDetail = boardService.getBoardDetail(board_seq);
+        boardService.updateBoard(board);
 
-		return boardDetail;
-	}
+        Board boardDetail = boardService.getBoardDetail(board_seq);
 
-	/**
-	 * 게시글 삭제
-	 * 
-	 * @param board_seq
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제합니다.")
-	@RequestMapping(value = "/{board_seq}", method = RequestMethod.DELETE)
-	@ResponseStatus(value = HttpStatus.OK)
-	@ResponseBody
-	public Board deleteBoard(@PathVariable("board_seq") int board_seq) throws Exception {
+        return boardDetail;
+    }
 
-		boardService.deleteBoard(board_seq);
+    /**
+     * 게시글 삭제
+     *
+     * @param board_seq
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제합니다.")
+    @RequestMapping(value = "/{board_seq}", method = RequestMethod.DELETE)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public Board deleteBoard(@PathVariable("board_seq") int board_seq) throws Exception {
 
-		Board deleteBoard = new Board();
-		deleteBoard.setBoard_seq(board_seq);
+        boardService.deleteBoard(board_seq);
 
-		return deleteBoard;
-	}
+        Board deleteBoard = new Board();
+        deleteBoard.setBoard_seq(board_seq);
+
+        return deleteBoard;
+    }
 }

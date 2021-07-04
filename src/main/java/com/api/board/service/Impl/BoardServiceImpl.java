@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Transactional(readOnly = true)
 @Service
@@ -24,8 +25,8 @@ public class BoardServiceImpl implements BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Lgec_Mkt_User_Count> getBoardCount(int inflow,int provide) throws Exception {
-		return boardMapper.getBoardCount( inflow, provide);
+	public List<Lgec_Mkt_User_Count> getBoardCount(Map map) throws Exception {
+		return boardMapper.getBoardCount(map);
 	}
 	/**
 	 * 게시글 목록 조회

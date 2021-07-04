@@ -2,6 +2,7 @@ package com.api.board.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.api.board.domain.Board;
 import com.api.board.domain.Lgec_Mkt_User_Count;
@@ -14,7 +15,7 @@ public interface BoardMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Lgec_Mkt_User_Count> getBoardCount(int inflow,int provide) throws Exception;
+	public List<Lgec_Mkt_User_Count> getBoardCount(Map map) throws Exception;
 	/**
 	 * 게시글 목록 조회
 	 * 
